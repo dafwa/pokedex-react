@@ -10,9 +10,9 @@ function PokemonList() {
         loading, 
         loadingDetails, 
         error,
-        limit,      // Get current limit
-        loadMore,   // Get function
-        hasMore     // Get boolean
+        limit,      
+        loadMore,   
+        hasMore     
     } = usePokemonList();
 
     return (
@@ -26,22 +26,23 @@ function PokemonList() {
                 disabled={loading}
             />
             
-            {/* Dynamic limit indicator */}
+            {/* Limit Indicator */}
             {!loading && !loadingDetails && displayedPokemons.length > 0 && (
-                <p style={{ textAlign: "center", color: "#888", marginTop: "-10px", marginBottom: "20px" }}>
+                <p className="limit-text">
                     Showing {displayedPokemons.length} results
                 </p>
             )}
 
             <div className="list-pokemon">
-                {loading && <div>Initializing Pokedex...</div>}
+                {/* Loading State */}
+                {loading && <div className="loading-text">Initializing Pokedex...</div>}
                 
                 {/* Error State */}
-                {error && <div style={{ color: "red" }}>{error}</div>}
+                {error && <div className="error-text">{error}</div>}
                 
                 {/* Empty State */}
                 {!loading && !loadingDetails && displayedPokemons.length === 0 && (
-                     <div>Data cannot be found</div>
+                     <div className="empty-text">Data tidak ditemukan</div>
                 )}
 
                 {/* List of Pokemon */}
@@ -51,25 +52,9 @@ function PokemonList() {
             </div>
 
             {/* Load More Button */}
-            {/* Only show if not loading, and if there is more data to show */}
             {!loading && !loadingDetails && hasMore && displayedPokemons.length > 0 && (
-                <div style={{ display: "flex", justifyContent: "center", marginBottom: "50px" }}>
-                    <button 
-                        onClick={loadMore}
-                        style={{
-                            padding: "12px 24px",
-                            fontSize: "1rem",
-                            fontWeight: "bold",
-                            backgroundColor: "white",
-                            border: "2px solid black",
-                            borderRadius: "5px",
-                            boxShadow: "3px 3px black",
-                            cursor: "pointer",
-                            transition: "transform 0.1s"
-                        }}
-                        onMouseDown={(e) => e.target.style.transform = "translate(2px, 2px)"}
-                        onMouseUp={(e) => e.target.style.transform = "translate(0, 0)"}
-                    >
+                <div className="load-more-container">
+                    <button className="load-more-btn" onClick={loadMore}>
                         Load More (+8)
                     </button>
                 </div>
@@ -77,7 +62,7 @@ function PokemonList() {
             
             {/* Loading Indicator for "Load More" action */}
             {loadingDetails && displayedPokemons.length > 0 && (
-                 <div style={{ textAlign: "center", marginBottom: "50px" }}>Loading more...</div>
+                 <div className="loading-text">Loading more...</div>
             )}
         </div>
     );
