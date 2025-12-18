@@ -11,6 +11,12 @@ function PokemonList() {
 
     return (
         <div>
+            <input
+                type="text"
+                placeholder="cari pokemon..."
+                className="search"
+                onChange={handleSearch}
+            />
             <div className="list-pokemon">
                 {pokemons.map((item) => (
                     <PokemonItem key={item.id} pokemon={item} />
