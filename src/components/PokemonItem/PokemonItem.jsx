@@ -3,6 +3,9 @@ import "./PokemonItem.css";
 import { colours } from "../../data/colours";
 
 function PokemonItem({ pokemon }) {
+    const fallbackImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
+    const imageSrc = fallbackImage; // primary host is flaky; use stable fallback by default
+
     return (
         <div
             className="pokemon-card"
@@ -10,7 +13,15 @@ function PokemonItem({ pokemon }) {
                 backgroundColor: `${pokemon.color}`,
             }}
         >
-            <img src={pokemon.imageUrl} alt={pokemon.name} width={250} />
+            <img
+                src={imageSrc}
+                alt={pokemon.name}
+                width={250}
+                onError={(e) => {
+                    e.currentTarget.onerror = null;
+                    e.currentTarget.src = fallbackImage;
+                }}
+            />
             <h1>{pokemon.name}</h1>
 
             <div className="types-container">

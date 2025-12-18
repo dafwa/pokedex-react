@@ -7,17 +7,20 @@ import "./PokemonList.css";
 import PokemonItem from "../PokemonItem/PokemonItem";
 
 function PokemonList() {
-    const [pokemons] = useState(pokemonJSON);
 
+    const [pokemons] = useState(pokemonJSON);
     const [filterPokemons, setFilterPokemons] = useState(pokemonJSON);
 
     const handleSearch = (e) => {
-        let search = pokemons.filter((item) => {
-            return item.name.toLowerCase().includes(e.target.value);
-        });
+        const keyword = e.target.value.toLowerCase();
+
+        const search = pokemons.filter((item) =>
+            item.name.toLowerCase().includes(keyword)
+        );
 
         setFilterPokemons(search);
     };
+
 
     return (
         <div>
