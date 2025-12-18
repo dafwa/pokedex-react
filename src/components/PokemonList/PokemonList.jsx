@@ -10,7 +10,7 @@ function PokemonList() {
         loading, 
         loadingDetails, 
         error,
-        limit,      
+        // limit,      
         loadMore,   
         hasMore     
     } = usePokemonList();
