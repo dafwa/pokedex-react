@@ -7,6 +7,11 @@ export function usePokemonList() {
     const [loading, setLoading] = useState(true);
     const [loadingDetails, setLoadingDetails] = useState(false);
     const [error, setError] = useState(null);
+    
+    // State to track how many items to show
+    const [limit, setLimit] = useState(8);
+    // State to check if there are more items to load (to hide/show button)
+    const [hasMore, setHasMore] = useState(true);
 
     // 1. Initial Load (Gen 1 - Gen 5)
     useEffect(() => {
@@ -28,7 +33,7 @@ export function usePokemonList() {
         fetchMasterList();
     }, []);
 
-    // 2. Watch Search & Master List
+    // 2. Watch Search & Master List & Limit
     useEffect(() => {
         if (allPokemonList.length === 0) return;
 
@@ -40,18 +45,19 @@ export function usePokemonList() {
                 item.name.toLowerCase().includes(searchTerm.toLowerCase())
             );
 
-            // Slice top 8
-            const slice = filtered.slice(0, 8);
+            // Update hasMore to control button visibility
+            setHasMore(filtered.length > limit);
+
+            // Slice using the dynamic 'limit' variable instead of hardcoded 8
+            const slice = filtered.slice(0, limit);
 
             try {
                 const detailedData = await Promise.all(
                     slice.map(async (pokemon) => {
                         const res = await fetch(pokemon.url);
                         const details = await res.json();
-
                         const speciesRes = await fetch(details.species.url);
                         const speciesDetails = await speciesRes.json();
-
                         return transformPokemonData(details, speciesDetails);
                     })
                 );
@@ -63,44 +69,47 @@ export function usePokemonList() {
             }
         };
 
-        // Debounce could be added here
         const timeoutId = setTimeout(() => {
             fetchVisibleDetails();
-        }, 500); // Added a 500ms delay to prevent API spam while typing
+        }, 500);
 
         return () => clearTimeout(timeoutId);
 
-    }, [searchTerm, allPokemonList]); 
+    }, [searchTerm, allPokemonList, limit]); // Re-run when 'limit' changes
 
-    // Helper: Merges Pokemon Data + Species Data
     const transformPokemonData = (details, speciesDetails) => {
         const englishEntry = speciesDetails.flavor_text_entries.find(
             (entry) => entry.language.name === "en"
         );
-
         return {
             id: details.id,
             name: details.name.charAt(0).toUpperCase() + details.name.slice(1),
             types: details.types.map((t) => t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1)),
             imageUrl: details.sprites?.other?.["official-artwork"]?.front_default || "",
-            description: englishEntry 
-                ? englishEntry.flavor_text.replace(/[\n\f]/g, " ") 
-                : "No description available.",
+            description: englishEntry ? englishEntry.flavor_text.replace(/[\n\f]/g, " ") : "No description available.",
             color: speciesDetails.color?.name || "gray", 
         };
     };
 
     const handleSearch = (e) => {
         setSearchTerm(e.target.value);
+        setLimit(8); // Reset limit to 8 when user searches new term
     };
 
-    // Return everything the View needs
+    // Function to increment limit
+    const loadMore = () => {
+        setLimit((prev) => prev + 8);
+    };
+
     return {
         displayedPokemons,
         searchTerm,
         handleSearch,
         loading,
         loadingDetails,
-        error
+        error,
+        limit,     
+        loadMore,  
+        hasMore    
     };
 }
