@@ -1,32 +1,35 @@
 import "./PokemonItem.css";
 import { colours } from "../../data/colours";
 
+// It relies only on static data ('colours'), so it doesn't need to be inside the render loop.
+const getTypeColor = (type) => {
+    const key = type.toLowerCase();
+    return colours[key] || "#777"; // Default gray
+};
+
 function PokemonItem({ pokemon }) {
-    // Determine image source
+    // Generate fallback URL
     const fallbackImage = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${pokemon.id}.png`;
     
-    // Safety check for color if the data/colours file doesn't match the API type exactly
-    const getTypeColor = (type) => {
-        const key = type.toLowerCase();
-        return colours[key] || "#777"; // Default gray if type color not found
-    };
+    // We calculate the primary color once here for cleaner JSX below
+    const primaryColor = getTypeColor(pokemon.types[0]);
 
     return (
         <div
             className="pokemon-card"
             style={{
-                borderColor: getTypeColor(pokemon.types[0]), 
-                boxShadow: `5px 5px ${getTypeColor(pokemon.types[0])}`
+                borderColor: primaryColor,
+                boxShadow: `5px 5px ${primaryColor}`
             }}
         >
             <img
                 src={pokemon.imageUrl || fallbackImage}
                 alt={pokemon.name}
                 width={250}
-                height={250} // Good for preventing layout shift
-                loading="lazy" // Native browser lazy loading
+                height={250}
+                loading="lazy"
                 onError={(e) => {
-                    e.currentTarget.onerror = null; // Prevent infinite loop
+                    e.currentTarget.onerror = null;
                     e.currentTarget.src = fallbackImage;
                 }}
             />
@@ -38,6 +41,7 @@ function PokemonItem({ pokemon }) {
                         key={index}
                         className="type-badge"
                         style={{
+                            // We use the helper directly here for specific type colors
                             backgroundColor: getTypeColor(type),
                         }}
                     >
@@ -46,7 +50,9 @@ function PokemonItem({ pokemon }) {
                 ))}
             </div>
 
-            <p className="description">{pokemon.description || "No description available."}</p>
+            <p className="description">
+                {pokemon.description || "No description available."}
+            </p>
         </div>
     );
 }
