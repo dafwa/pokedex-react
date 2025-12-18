@@ -1,21 +1,23 @@
 import pokemonJSON from "../../data/pokemon.json";
 
-import { useState } from "react"
+import { useState } from "react";
 
 import "./PokemonList.css";
 
-function PokemonList() {
-  const [pokemons] = useState(pokemonJSON);
+import PokemonItem from "../PokemonItem/PokemonItem";
 
-  return (
-    <div>
-      <div className="list-pokemon">
-        {pokemons.map((item) => (
-          <h1>{item.name}</h1>
-        ))}
-      </div>
-    </div>
-  );
+function PokemonList() {
+    const [pokemons] = useState(pokemonJSON);
+
+    return (
+        <div>
+            <div className="list-pokemon">
+                {pokemons.map((item) => (
+                    <PokemonItem key={item.id} pokemon={item} />
+                ))}
+            </div>
+        </div>
+    );
 }
 
 export default PokemonList;
