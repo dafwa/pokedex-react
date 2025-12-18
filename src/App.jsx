@@ -1,7 +1,11 @@
+import PokemonList from "./components/PokemonList/PokemonList";
+
 function App() {
-  return <>
-    <h1>Hello, World!</h1>
-  </>;
+  return (
+    <>
+      <PokemonList />
+    </>
+  );
 }
 
 export default App;
