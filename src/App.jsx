@@ -5,7 +5,7 @@ function App() {
     <>
       <PokemonList />
       <footer>
-        <p style={{ textAlign: "center", color: "#888", margin: "5rem 0 5rem" }}>
+        <p className="text-center text-zinc-500 mb-10 text-base">
           Made with ❤️ by Daffa Fakhir using React + Vite.
         </p>
       </footer>

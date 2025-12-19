@@ -1,9 +1,39 @@
-@import url("https://fonts.googleapis.com/css2?family=Jura:wght@300;500;700&display=swap");
+@import "tailwindcss";
 
-* {
+body {
+  /* 1. Base Background Color (Elegant Charcoal - Zinc 900) */
+  background-color: #18181b; 
+  
+  /* 2. Base Text Color (Soft White) */
+  color: #f4f4f5; 
+
+  /* 3. Typography */
+  font-family: "Jura", system-ui, -apple-system, sans-serif;
+  
+  /* 4. The Dot Pattern (Light Gray dots on Dark BG) */
+  background-image: radial-gradient(#3f3f46 1px, transparent 1px);
+  background-size: 20px 20px;
+
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
-  font-family: "Jura", sans-serif;
-  background-color: #dfdfdf;
+  min-height: 100vh;
+}
+
+/* Dark Mode Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #18181b; /* Matches body bg */
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #52525b; /* Zinc-600 (Gray handle) */
+  border: 2px solid #18181b; /* Padding effect */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: #71717a; /* Lighter gray on hover */
 }
