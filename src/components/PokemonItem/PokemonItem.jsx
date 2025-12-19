@@ -1,6 +1,5 @@
 import { colours } from "../../data/colours";
 
-// Helper function outside component
 const getTypeColor = (type) => {
     const key = type.toLowerCase();
     return colours[key] || "#777";
@@ -12,25 +11,29 @@ function PokemonItem({ pokemon }) {
 
     return (
         <div
-            // Tailwind Classes:
-            // relative, overflow-hidden: needed for the description slide-up
-            // group: allows children to react to hover
-            // w-full, rounded, border-2: basic styling
-            className="pokemon-card group relative overflow-hidden w-full bg-white rounded-[10px] text-center p-5 border-2 border-black"
+            // UPDATED CLASSES:
+            // bg-zinc-800: Dark gray background
+            // border-zinc-500: Softer gray border (elegant look)
+            // text-white: Readable text
+            className="pokemon-card group relative overflow-hidden w-full bg-zinc-800 rounded-[10px] text-center p-5 border-2 border-zinc-500 text-white"
             style={{
-                // We keep inline styles for dynamic colors that Tailwind can't predict
-                borderColor: primaryColor,
-                boxShadow: `5px 5px ${primaryColor}`
+                borderColor: primaryColor, // Keep the colored border feature
+                boxShadow: `5px 5px ${primaryColor}` // This now looks like a NEON GLOW
             }}
         >
             <img
                 src={pokemon.imageUrl || fallbackImage}
                 alt={pokemon.name}
-                // width/height attributes are good for CLS, Tailwind handles visual size
                 width={250}
                 height={250}
                 className="w-full max-w-50 h-auto object-contain mx-auto"
                 loading="lazy"
+                style={{
+                    // 'drop-shadow' creates the outline glow. 
+                    // 0 0 15px defines the position (centered) and blur radius (glow size).
+                    filter: `drop-shadow(0 0 2px ${primaryColor})`
+                    // filter: "drop-shadow(0 0 2px rgba(255, 255, 255, 0.6))"
+                }}
                 onError={(e) => {
                     e.currentTarget.onerror = null;
                     e.currentTarget.src = fallbackImage;
@@ -43,7 +46,9 @@ function PokemonItem({ pokemon }) {
                 {pokemon.types.map((type, index) => (
                     <span
                         key={index}
-                        className="px-3 py-1 rounded-md border-2 border-black text-white text-sm font-bold shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                        // Updated: border-zinc-500, text-white
+                        // Removed dark shadow on badges for a cleaner flat look
+                        className="px-3 py-1 rounded-md border-2 border-zinc-500 text-white text-sm font-bold"
                         style={{
                             backgroundColor: getTypeColor(type),
                         }}
@@ -54,8 +59,8 @@ function PokemonItem({ pokemon }) {
             </div>
 
             {/* Description Slide-up */}
-            {/* translate-y-full pushes it down, group-hover brings it up */}
-            <p className="text-left p-5 text-lg absolute bottom-0 left-0 w-full bg-white transition-transform duration-300 translate-y-full border-t-2 border-black group-hover:translate-y-0">
+            {/* Updated: bg-zinc-800 (matches card), border-zinc-500 */}
+            <p className="text-left p-5 text-lg absolute bottom-0 left-0 w-full bg-zinc-800 transition-transform duration-300 translate-y-full border-t-2 border-zinc-500 group-hover:translate-y-0">
                 {pokemon.description || "No description available."}
             </p>
         </div>

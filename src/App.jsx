@@ -5,7 +5,7 @@ function App() {
     <>
       <PokemonList />
       <footer>
-        <p className="text-center text-gray-500 mb-10 text-base">
+        <p className="text-center text-zinc-500 mb-10 text-base">
           Made with ❤️ by Daffa Fakhir using React + Vite.
         </p>
       </footer>
