@@ -1,4 +1,3 @@
-import "./PokemonList.css";
 import PokemonItem from "../PokemonItem/PokemonItem";
 import { usePokemonList } from "../../hooks/usePokemonList";
 
@@ -9,8 +8,7 @@ function PokemonList() {
         handleSearch, 
         loading, 
         loadingDetails, 
-        error,
-        // limit,      
+        error, 
         loadMore,   
         hasMore     
     } = usePokemonList();
@@ -20,7 +18,7 @@ function PokemonList() {
             <input
                 type="text"
                 placeholder="Find Pokemon..."
-                className="search"
+                className="block w-[min(720px,90vw)] p-4 mx-auto mt-12 mb-8 text-base shadow-[3px_5px_0px_0px_rgba(0,0,0,1)] rounded-md border-2 border-black"
                 onChange={handleSearch}
                 value={searchTerm}
                 disabled={loading}
@@ -28,21 +26,24 @@ function PokemonList() {
             
             {/* Limit Indicator */}
             {!loading && !loadingDetails && displayedPokemons.length > 0 && (
-                <p className="limit-text">
+                <p className="text-center text-gray-500 -mt-2 mb-5 text-sm">
                     Showing {displayedPokemons.length} results
                 </p>
             )}
 
-            <div className="list-pokemon">
+            {/* Grid Container */}
+            {/* Mobile: grid-cols-2 | Desktop (md): Auto-fit columns min 250px */}
+            <div className="grid grid-cols-2 md:grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-4 md:gap-8 mx-auto mb-32 px-4 md:px-6 max-w-7xl">
+                
                 {/* Loading State */}
-                {loading && <div className="loading-text">Initializing Pokedex...</div>}
+                {loading && <div className="col-span-full text-center font-bold text-gray-600">Initializing Pokedex...</div>}
                 
                 {/* Error State */}
-                {error && <div className="error-text">{error}</div>}
+                {error && <div className="col-span-full text-center font-bold text-red-500">{error}</div>}
                 
                 {/* Empty State */}
                 {!loading && !loadingDetails && displayedPokemons.length === 0 && (
-                     <div className="empty-text">Data tidak ditemukan</div>
+                     <div className="col-span-full text-center text-xl text-gray-600">Data tidak ditemukan</div>
                 )}
 
                 {/* List of Pokemon */}
@@ -53,8 +54,11 @@ function PokemonList() {
 
             {/* Load More Button */}
             {!loading && !loadingDetails && hasMore && displayedPokemons.length > 0 && (
-                <div className="load-more-container">
-                    <button className="load-more-btn" onClick={loadMore}>
+                <div className="flex justify-center mb-12">
+                    <button 
+                        className="px-6 py-3 text-base font-bold bg-white border-2 border-black rounded-md shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] cursor-pointer transition-transform active:translate-x-0.5 active:translate-y-0.5 active:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)]"
+                        onClick={loadMore}
+                    >
                         Load More (+8)
                     </button>
                 </div>
@@ -62,7 +66,7 @@ function PokemonList() {
             
             {/* Loading Indicator for "Load More" action */}
             {loadingDetails && displayedPokemons.length > 0 && (
-                 <div className="loading-text">Loading more...</div>
+                 <div className="text-center mb-12 font-bold text-gray-600">Loading more...</div>
             )}
         </div>
     );
